@@ -14,7 +14,6 @@ import {
     FormControl,
     InputLabel
 } from "@mui/material";
-import Pagination from '@mui/material/Pagination';
 
 const NotesPagination = () => {
     const [paginationData, setPaginationData] = useState({
