@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createNote } from '../api';
 import NoteForm from '../components/NoteForm';
 import { useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const NoteCreatePage = () => {

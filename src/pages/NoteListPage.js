@@ -39,9 +39,9 @@ const NoteListPage = () => {
         fetchNotesData();
     }, []);
 
-    const handleEdit = (noteId) => {
-        console.log(`Editing note with id: ${noteId}`);
-    };
+    // const handleEdit = (noteId) => {
+    //     console.log(`Editing note with id: ${noteId}`);
+    // };
 
     const handleDelete = (noteId) => {
         setDeleteConfirmation({open: true, noteIdToDelete: noteId});
