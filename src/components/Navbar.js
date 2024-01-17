@@ -21,6 +21,11 @@ const Navbar = () => {
                 Notes List
               </Button>
             </li>
+            <li>
+              <Button color="inherit" component={Link} to="/webnotes">
+                Web Notes List
+              </Button>
+            </li>
                         <li>
               <Button color="inherit" component={Link} to="/notespg">
                 Notes Pagination

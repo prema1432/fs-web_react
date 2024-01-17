@@ -6,6 +6,7 @@ import Navbar from "./components/Navbar";
 import NoteCreatePage from "./pages/NoteCreatePage";
 import NoteEditPage from "./pages/NoteEditPage";
 import NotesPagination from "./pages/NotesPagination";
+import WebNotes from "./pages/WebNotes";
 
 
 const App = () => {
@@ -15,6 +16,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/notes" element={<NoteListPage/>}/>
+                <Route path="/webnotes" element={<WebNotes/>}/>
                 <Route path="/notespg" element={<NotesPagination/>}/>
                 <Route path="/create" element={<NoteCreatePage/>}/>
                 <Route path="/edit/:id" element={<NoteEditPage/>}/>
