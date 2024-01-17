@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {fetchNotes, deleteNote} from '../api';
+import {fetchNotes, deleteNote, updateNote} from '../api';
 import {
     IconButton,
     Paper,
@@ -13,7 +13,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
-    Button, Typography, Alert, AlertTitle,
+    Button, Typography, Alert, AlertTitle, Switch,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -91,11 +91,30 @@ const NoteListPage = () => {
         return new Intl.DateTimeFormat('en-US', options).format(new Date(dateTimeString));
     };
 
+    const handleToggleActive = async (noteId, newActiveState) => {
+        try {
+            // Make the API call to update the note with the new is_active state
+            await updateNote(noteId, {is_active: newActiveState});
+
+            // Update the local state or refetch the notes if necessary
+            setNotes((prevNotes) =>
+                prevNotes.map((note) =>
+                    note.id === noteId ? {...note, is_active: newActiveState} : note
+                )
+            );
+
+            // You may want to show a success message or handle other UI updates
+        } catch (error) {
+            console.error('Error updating note:', error);
+            // Handle the error or show an error message to the user
+        }
+    };
+
     return (
         <div>
             <h2>Notes List</h2>
             {/*{error && <Alert variant="filled" severity="error">*/}
-            {error ? (<Alert variant="filled" severity="error" sx={{ margin: '0 20%' }}>
+            {error ? (<Alert variant="filled" severity="error" sx={{margin: '0 20%'}}>
                 <AlertTitle>Error</AlertTitle>
                 {error.message}
             </Alert>) : (
@@ -106,6 +125,7 @@ const NoteListPage = () => {
                                 <TableCell sx={{fontWeight: 'bold'}}>Id</TableCell>
                                 <TableCell sx={{fontWeight: 'bold'}}>Title</TableCell>
                                 <TableCell sx={{fontWeight: 'bold'}}>Body</TableCell>
+                                <TableCell sx={{fontWeight: 'bold'}}>Active</TableCell>
                                 <TableCell sx={{fontWeight: 'bold'}}>Created At</TableCell>
                                 <TableCell sx={{fontWeight: 'bold'}}>Action</TableCell>
                             </TableRow>
@@ -113,7 +133,7 @@ const NoteListPage = () => {
 
                         <TableBody>
                             {loading ? (
-                                    <SkeletonLoader numRows={10} numColumns={5}/>
+                                    <SkeletonLoader numRows={10} numColumns={6}/>
                                 ) :
                                 (notes.map((note) => (
                                     <TableRow key={note.id}>
@@ -126,11 +146,22 @@ const NoteListPage = () => {
                                         </TableCell>
                                         <TableCell>{note.body}</TableCell>
                                         <TableCell>
+                                            <Typography
+                                                variant="body1"
+                                                sx={{
+                                                    fontWeight: 'bold',
+                                                    color: note.is_active ? 'green' : 'red',
+                                                }}
+                                            >
+                                                {note.is_active ? 'True' : 'False'}
+                                            </Typography> </TableCell>
+                                        <TableCell>
                                             <Typography variant="body1" sx={{fontWeight: 'bold', color: 'blue'}}>
                                                 Created:
                                             </Typography>
                                             {formatDateTime(note.created_at)}
                                         </TableCell>
+
                                         <TableCell>
                                             <IconButton
                                                 color="primary"
@@ -141,7 +172,13 @@ const NoteListPage = () => {
                                             </IconButton>
                                             <IconButton color="secondary" onClick={() => handleDelete(note.id)}>
                                                 <DeleteForeverIcon/>
+
                                             </IconButton>
+                                                 <Switch
+                                                    checked={note.is_active}
+                                                    onChange={() => handleToggleActive(note.id, !note.is_active)}
+                                                    color="primary"
+                                                />
                                         </TableCell>
                                     </TableRow>
                                 )))
