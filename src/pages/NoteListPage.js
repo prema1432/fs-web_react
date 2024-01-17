@@ -19,7 +19,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {Link} from 'react-router-dom';
 import SkeletonLoader from "../components/SkeltonLoader";
-import {Bounce, toast, ToastContainer} from "react-toastify";
+import {ToastContainer} from "react-toastify";
 import showToastMessage from "../components/showToastMessage";
 
 const NoteListPage = () => {
