@@ -19,6 +19,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import {Link} from 'react-router-dom';
 import SkeletonLoader from "../components/SkeltonLoader";
+import {Bounce, toast, ToastContainer} from "react-toastify";
+import showToastMessage from "../components/showToastMessage";
 
 const NoteListPage = () => {
     const [notes, setNotes] = useState([]);
@@ -66,8 +68,12 @@ const NoteListPage = () => {
             setNotes((prevNotes) =>
                 prevNotes.filter((note) => note.id !== deleteConfirmation.noteIdToDelete)
             );
+            showToastMessage("success", "Note Deleted Successfully");
+
         } catch (error) {
             console.error('Error deleting note:', error);
+            showToastMessage("error", 'Error e Note:', error);
+
         } finally {
             setDeleteConfirmation({open: false, noteIdToDelete: null});
         }
@@ -102,17 +108,31 @@ const NoteListPage = () => {
                     note.id === noteId ? {...note, is_active: newActiveState} : note
                 )
             );
+            showToastMessage("success", `Note ${newActiveState ? 'Activated' : 'Disabled'}`);
 
-            // You may want to show a success message or handle other UI updates
         } catch (error) {
             console.error('Error updating note:', error);
-            // Handle the error or show an error message to the user
+            showToastMessage("error", 'Error Updating Note:', error);
+
         }
     };
 
     return (
         <div>
             <h2>Notes List</h2>
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="colored"
+
+            />
             {/*{error && <Alert variant="filled" severity="error">*/}
             {error ? (<Alert variant="filled" severity="error" sx={{margin: '0 20%'}}>
                 <AlertTitle>Error</AlertTitle>
@@ -174,11 +194,11 @@ const NoteListPage = () => {
                                                 <DeleteForeverIcon/>
 
                                             </IconButton>
-                                                 <Switch
-                                                    checked={note.is_active}
-                                                    onChange={() => handleToggleActive(note.id, !note.is_active)}
-                                                    color="primary"
-                                                />
+                                            <Switch
+                                                checked={note.is_active}
+                                                onChange={() => handleToggleActive(note.id, !note.is_active)}
+                                                color="primary"
+                                            />
                                         </TableCell>
                                     </TableRow>
                                 )))
